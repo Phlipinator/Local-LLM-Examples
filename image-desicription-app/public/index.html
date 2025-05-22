@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Description App</title>
+</head>
+<body>
+    <h1>Image Description App</h1>
+    
+    <!-- File input for now -->
+    <input type="file" id="fileInput" accept="image/*">
+    <button id="uploadBtn">Upload</button>
+    
+    <!-- Preview area -->
+    <div id="preview"></div>
+    
+</body>
+</html>
+<script>
+const fileInput = document.getElementById('fileInput');
+const uploadBtn = document.getElementById('uploadBtn');
+const preview = document.getElementById('preview');
+
+let selectedFile = null;
+
+fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    selectedFile = file; // Store the file for later upload
+    
+    if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            preview.innerHTML = `<img src="${e.target.result}" style="max-width: 300px;">`;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+uploadBtn.addEventListener('click', async () => {
+    if (!selectedFile) {
+        alert('Please select a file first!');
+        return;
+    }
+    
+    // Show that we're processing
+    uploadBtn.textContent = 'Processing...';
+    uploadBtn.disabled = true;
+    
+    const formData = new FormData();
+    formData.append('image', selectedFile);
+    
+    try {
+        const response = await fetch('/describe', {  // Changed from '/upload' to '/describe'
+            method: 'POST',
+            body: formData
+        });
+        
+        const result = await response.json();
+        console.log('Description result:', result);
+        
+        // Show the description
+        preview.innerHTML += `<p><strong>Description:</strong> ${result.description}</p>`;
+        
+    } catch (error) {
+        console.error('Processing failed:', error);
+        alert('Processing failed!');
+    } finally {
+        // Reset button
+        uploadBtn.textContent = 'Upload';
+        uploadBtn.disabled = false;
+    }
+});
+</script>

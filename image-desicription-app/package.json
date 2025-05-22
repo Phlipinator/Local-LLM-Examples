@@ -1,0 +1,17 @@
+{
+  "name": "image-desicription-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@lmstudio/sdk": "^1.1.1",
+    "express": "^5.1.0",
+    "multer": "^2.0.0"
+  }
+}
