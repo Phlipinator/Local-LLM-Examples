@@ -30,11 +30,14 @@ def connect_wifi():
 
 def send_request():
 
+
     headers = {
         "Content-Type": "application/json"
     }
 
     try:
+        print("Sending request to:", API_URL)
+        response = urequests.post(API_URL, headers=headers, data=ujson.dumps(REQUEST_DATA))
         print("Sending request to:", API_URL)
         response = urequests.post(API_URL, headers=headers, data=ujson.dumps(REQUEST_DATA))
         json_data = response.json()  # Convert response to a Python dictionary
