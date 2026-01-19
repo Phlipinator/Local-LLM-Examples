@@ -129,7 +129,7 @@ def send_request(request_data):
     gc.collect()
     
 def publish_chunked(topic, text):
-    text = text.encode("utf-8")
+    text = text.encode("ascii")
 
     for i in range(0, len(text), CHUNK_SIZE):
         chunk = text[i:i + CHUNK_SIZE]
